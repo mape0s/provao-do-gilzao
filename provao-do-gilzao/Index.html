@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gerenciador de Atividades</title>
+    <link href="styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="javascript.js">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="navbar d-flex justify-content-center">GERENCIADOR DE ATIVIDADES</nav>
+    <div class="container">
+        <div class="row d-flex ">
+            <div class="form col-6">
+                <h5>adicionar atividade</h5>
+                <div class="form-input">
+                    <input type="text" class="form-input-text">
+                    <select name="tipo" id="tipoTarefa" class="form-input-select ">
+                        <option value="Academica">Academica</option>
+                        <option value="Fisica">Fisica</option>
+                        <option value="Domestica">Domestica</option>
+                        <option value="Lazer">Lazer</option>
+                    </select>
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-8">
+                            <input type="date" id="data" name="data" class="form-input-date">
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" class="button-save" id="btnSalvar">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="graph col-6 d-flex justify-content-center">
+                <div id="columnchart_values"></div>
+                <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-4">
+                <div class="box-status">
+                    <h5>Pendentes:</h5>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="box-status">
+                    <h5>Finalizadas:</h5>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="box-status">
+                    <h5>Total:</h5>
+                </div>
+            </div>
+        </div>
+        <div class="form-search mt-3">
+            <h5>FILTRO DE ATIVIDADES</h5>
+            <div class="d-flex row justify-content-center">
+                <div class="col-5">
+                    <select name="tipos" id="t" class="form-input-select ">
+                        <option value="Todos">Todos os tipos</option>
+                        <option value="Academica">Academica</option>
+                        <option value="Fisica">Fisica</option>
+                        <option value="Domestica">Domestica</option>
+                        <option value="Lazer">Lazer</option>
+                    </select>
+                </div>
+                <div class="box-checks col-5 d-flex justify-content-around">
+                    <div>
+                        <input type="checkbox"> Pendentes
+                    </div>
+                    <div>
+                        <input type="checkbox"> Finalizadas
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="box-table d-flex justify-content-center">
+                <table>
+                    <thead>
+                        <tr><th>Atividades</th><th>Classificacao</th><th>Data</th><th>Acoens</th></tr>
+                    </thead>
+                    <tbody id="tabela-tipo"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="javascript.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
+<script type="text/javascript">
+    document.getElementById('form-todo').addEventListener('submit', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    });
+    window.addEventListener('load', () => {
+        loadData()
+    });
+    google.charts.load('current', { 'packages': ['geochart', 'bar', 'corechart'], });
+    google.charts.setOnLoadCallback(drawMap);
+</script>
