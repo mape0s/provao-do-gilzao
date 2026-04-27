@@ -7,6 +7,7 @@
     <link href="styles.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
@@ -55,41 +56,44 @@
                 </div>
             </div>
         </div>
- 
-        <div class="form-search mt-3">
-            <h5>FILTRO DE ATIVIDADES</h5>
-            <div class="d-flex row justify-content-center">
-                <div class="col-6 d-flex justify-content-center m-0">
-                    <select id="filtroTipo" class="form-input-select" style="margin-bottom:0">
-                        <option value="Todos">Todos os tipos de atividade</option>
-                        <option value="Academica">Académica</option>
-                        <option value="Fisica">Física</option>
-                        <option value="Domestica">Doméstica</option>
-                        <option value="Lazer">Lazer</option>
-                    </select>
-                </div>
-                <div class=" col-6 box-checks d-flex justify-content-around m-0">
-                    <div>
-                        <input type="checkbox" id="chkPend" checked> Pendentes
+        <div class="row">
+            <div class="form-search mt-3 col-12">
+                <h5>FILTRO DE ATIVIDADES</h5>
+                <div class="d-flex row ">
+                    <div class="col-6 d-flex justify-content-center m-0 p-0">
+                        <select id="filtroTipo" class="form-input-select p-0" style="margin-bottom:0">
+                            <option value="Todos">Todos os tipos de atividade</option>
+                            <option value="Academica">Académica</option>
+                            <option value="Fisica">Física</option>
+                            <option value="Domestica">Doméstica</option>
+                            <option value="Lazer">Lazer</option>
+                        </select>
                     </div>
-                    <div>
-                        <input type="checkbox" id="chkDone" checked> Finalizadas
+                    <div class=" col-6 box-checks d-flex justify-content-around m-0 p-0">
+                        <div>
+                            <input type="checkbox" id="chkPend" checked> Pendentes
+                        </div>
+                        <div>
+                            <input type="checkbox" id="chkDone" checked> Finalizadas
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
- 
-        <div class="box-table mt-3">
-            <table class="table .table-striped .text-table">
-                <thead class>
-                        <th>Atividade</th>
-                        <th>Classificação</th>
-                        <th>Data</th>
-                        <th>Ações</th>
 
-                </thead>
-                <tbody id="tabela-tipo"></tbody>
-            </table>
+        </div>
+        <div class="row">
+            <div class="box-table mt-3 col-12">
+                <table class="table .table-striped .text-table">
+                    <thead class>
+                            <th>Atividade</th>
+                            <th>Classificação</th>
+                            <th>Data</th>
+                            <th>Ações</th>
+    
+                    </thead>
+                    <tbody id="tabela-tipo"></tbody>
+                </table>
+            </div>
         </div>
     </div>
  

@@ -115,8 +115,8 @@ function render() {
         linha = linha + '<td ' + estilo + '>' + r.tipo + '</td>';
         linha = linha + '<td ' + estilo + '>' + dataFormatada + '</td>';
         linha = linha + '<td>';
-        linha = linha + '<input type="checkbox" class="check-table" ' + checked + ' onchange="finalizar(' + r.id + ')">';
-        linha = linha + '<button class="btn-lixeira" onclick="remover(' + r.id + ')"></button>';
+        linha = linha + '<input type="checkbox" class="check-table" ' + checked + ' onchange="finalizar(' + r.id + ')" id = "abc">';
+        linha = linha + '<button class="btn-lixeira" onclick="remover(' + r.id + ')"><i class="material-icons">delete</i></button>';
         linha = linha + '</td>';
         linha = linha + '</tr>';
         return linha;
