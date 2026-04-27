@@ -1,74 +1,92 @@
-google.charts.load("current", { packages: ['corechart'] });
-google.charts.setOnLoadCallback(drawChart);
-
-const tipos = ['Academica', 'Domestica', 'Fisica', 'Lazer'];
-
-// ✔️ carregar do localStorage (ou vazio)
-let registros = JSON.parse(localStorage.getItem('atividade') || '[]');
-
-// ✔️ se não tiver nada, cria exemplo inicial
-if (registros.length === 0) {
-    registros = [
-        { descricao: 'Exemplo', tipo: 'Academica', data: '2024-01-01' },
-    ];
-    localStorage.setItem('atividade', JSON.stringify(registros));
+let registros = [];
+ 
+google.charts.load('current', { packages: ['corechart'] });
+google.charts.setOnLoadCallback(iniciar);
+ 
+function iniciar() {
+    Data();
+    Eventos();
+    render();
 }
 
-// ✔️ conta quantos registros de cada tipo existem
-function contarTipo(tipo) {
-    return registros.reduce((soma, r) => {
-        return r.tipo === tipo ? soma + 1 : soma;
-    }, 0);
-}
-
-// ✔️ desenha o gráfico
-function drawChart() {
-
-    const linhas = tipos.map(t => [t, contarTipo(t)]);
-
-    const data = google.visualization.arrayToDataTable([
-        ["Tipo", "Quantidade"],
-        ...linhas
-    ]);
-
-    const options = {
-        width: 500,
-        height: 300,
-        bar: { groupWidth: "40%" },
-        legend: { position: "none" },
-        vAxis: { minValue: 0 }
-    };
-
-    const chart = new google.visualization.ColumnChart(
-        document.getElementById("columnchart_values")
-    );
-
-    chart.draw(data, options);
-}
-
-// ✔️ botão salvar novo registro
-document.getElementById("btnSalvar").onclick = () => {
-
-    const select = document.querySelector("#menu select");
-    const tipoSelecionado = select.value;
-
-    registros.push({
-        descricao: tipoSelecionado,
-        tipo: tipoSelecionado,
-        data: new Date().toISOString().split('T')[0]
-    });
-
-    // salva corretamente no localStorage
-    localStorage.setItem('atividade', JSON.stringify(registros));
-
-    // redesenha o gráfico
-    drawChart();
-};
-
-// ✔️ limitar data mínima no input
-const inputData = document.getElementById("data");
-
-if (inputData) {
+function Data() {
     const hoje = new Date().toISOString().split("T")[0];
-    inputData.min = hoje;
+    document.getElementById('data').min = hoje;
+}
+
+function Eventos() {
+    document.getElementById('btnSalvar').onclick = salvar;
+    document.getElementById('filtroTipo').onchange = render;
+    document.getElementById('chkPend').onchange = render;
+    document.getElementById('chkDone').onchange = render;
+}
+ 
+function salvar() {
+    let desc = document.getElementById('descricao').value;
+    let tipo = document.getElementById('tipoTarefa').value;
+    let data = document.getElementById('data').value;
+ 
+    if (desc == '' || data == '') {
+        alert('Preencha todos os campos.');
+        return;
+    }
+ 
+    registros.push({ id: Date.now(), descricao: desc, tipo: tipo, data: data, feita: false });
+    document.getElementById('descricao').value = '';
+    document.getElementById('data').value = '';
+    render();
+}
+ 
+function render() {
+    let pendentes   = registros.reduce(function(acc, r) { return acc + (!r.feita ? 1 : 0); }, 0);
+    let finalizadas = registros.reduce(function(acc, r) { return acc + (r.feita ? 1 : 0); }, 0);
+    document.getElementById('pendente').textContent   = pendentes;
+    document.getElementById('finalizado').textContent = finalizadas;
+    document.getElementById('Total').textContent      = registros.length;
+
+    let academica = 0, fisica = 0, domestica = 0, lazer = 0;
+    for (let i = 0; i < registros.length; i++) {
+        if (registros[i].tipo == 'Academica') academica++;
+        if (registros[i].tipo == 'Fisica') fisica++;
+        if (registros[i].tipo == 'Domestica') domestica++;
+        if (registros[i].tipo == 'Lazer') lazer++;
+    }
+ 
+    let data = google.visualization.arrayToDataTable([
+        ['Tipo', 'Quantidade'],
+        ['Academica', academica],
+        ['Fisica',    fisica],
+        ['Domestica', domestica],
+        ['Lazer',     lazer]
+    ]);
+ 
+    let chart = new google.visualization.ColumnChart(document.getElementById('columnchart_values'));
+    chart.draw(data, {
+    legend: { position: 'none' },
+    vAxis: { minValue: 0, viewWindow: { min: 0 } },
+    colors: ['#8a2be2']
+});
+
+let linhas = registros.map(function(r) {
+    let partes = r.data.split(' ');
+    let dia  = partes[2];
+    let mes  = partes[1];
+    let ano  = partes[0];
+    let dataFormatada = dia + '/' + mes + '/' + ano;
+    let checked = '';
+    if (r.feita == true) {
+        checked = 'checked';
+    }
+    let linha = '<tr>';
+    linha = linha + '<td>' + r.descricao + '</td>';
+    linha = linha + '<td>' + r.tipo + '</td>';
+    linha = linha + '<td>' + dataFormatada + '</td>';
+    linha = linha + '<td>';
+    linha = linha + '<input type="checkbox" class="check-table" ' + checked + ' onchange="finalizar(' + r.id + ')">';
+    linha = linha + '<button class="btn-lixeira" onclick="remover(' + r.id + ')"></button>';
+    linha = linha + '</td>';
+    linha = linha + '</tr>';
+    return linha;
+});
+document.getElementById('tabela-tipo').innerHTML = linhas.join('');
 }
